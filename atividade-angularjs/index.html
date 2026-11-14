@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR" ng-app="catalogo">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Catálogo de estudo | AngularJS</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main ng-controller="CatalogoController" ng-cloak>
+      <header>
+        <h1>Catálogo de estudo</h1>
+        <div>AngularJS</div>
+      </header>
+      <div class="grid">
+        <section>
+          <h2>Perguntas frequentes</h2>
+          <faq-list items="dados.faq"></faq-list>
+        </section>
+        <section>
+          <h2>Produtos</h2>
+          <ul>
+            <li
+              ng-repeat="produto in produtos | limitTo:2:(pagina - 1) * 2 track by produto.name"
+            >
+              {{ produto.name }} — {{ produto.price | reais }}
+            </li>
+          </ul>
+          <page-nav
+            current="pagina"
+            total="total"
+            on-change="irPara(page)"
+          ></page-nav>
+        </section>
+        <section>
+          <h2>Progresso do envio</h2>
+          <label for="envio">Simular andamento</label>
+          <input
+            id="envio"
+            type="range"
+            min="0"
+            max="100"
+            ng-model="progresso"
+          />
+          <upload-progress value="progresso"></upload-progress>
+        </section>
+        <section>
+          <h2>Informações</h2>
+          <info-tabs items="dados.tabs"></info-tabs>
+        </section>
+        <section>
+          <h2>Categoria</h2>
+          <category-menu
+            options="dados.options"
+            on-select="filtrar(option)"
+          ></category-menu>
+          <p>Filtro atual: {{ categoria }}</p>
+        </section>
+        <section>
+          <h2>Notificação</h2>
+          <button type="button" ng-click="salvar()">Simular salvamento</button>
+          <app-toast></app-toast>
+        </section>
+      </div>
+    </main>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="./services.js"></script>
+    <script src="./directives.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
